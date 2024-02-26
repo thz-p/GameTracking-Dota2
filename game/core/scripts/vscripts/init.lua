@@ -182,21 +182,27 @@ else
 	end
 end
 
--- This function lets a lua instance extend a c++ instance.
-function ExtendInstance( instance, luaClass )
-	-- Assume if BaseClass has already been set, we're in the script_reload case.
-	if instance.BaseClass ~= nil and getmetatable( instance ).__index ~= luaClass then
-		setmetatable( luaClass, { __index = instance.BaseClass } )
-		setmetatable( instance, { __index = luaClass } )
-		return instance
-	end
-	instance.BaseClass = getmetatable( instance ).__index
-    setmetatable( luaClass, getmetatable( instance ) )
-    setmetatable( instance, { __index = luaClass } )
+-- 此函数允许 Lua 实例扩展 C++ 实例的功能。
+function ExtendInstance(instance, luaClass)
+    -- 假设如果 BaseClass 已经设置，我们处于脚本重新加载的情况。
+    -- 如果实例的元表 __index 不等于 luaClass，则重新绑定。
+    if instance.BaseClass ~= nil and getmetatable(instance).__index ~= luaClass then
+        -- 将 luaClass 的元表设置为其 __index 指向 instance.BaseClass。
+        setmetatable(luaClass, { __index = instance.BaseClass })
+        -- 将实例的元表设置为其 __index 指向 luaClass。
+        setmetatable(instance, { __index = luaClass })
+        -- 返回修改后的实例。
+        return instance
+    end
+    -- 将当前元表的 __index 存储在 instance.BaseClass 中。
+    instance.BaseClass = getmetatable(instance).__index
+    -- 将 luaClass 的元表设置为与实例的元表相同。
+    setmetatable(luaClass, getmetatable(instance))
+    -- 将实例的元表设置为其 __index 指向 luaClass。
+    setmetatable(instance, { __index = luaClass })
+    -- 返回修改后的实例。
     return instance
 end
-
-
 
 Msg( "...done\n" )
 

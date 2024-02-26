@@ -151,35 +151,52 @@ function GetFunctionSignature( func, name )
 	return signature
 end
 
+-- _PublishedHelp 是一个空表，用于存储已发布的帮助信息。
 _PublishedHelp = {}
-function AddToScriptHelp( scopeTable )
-	if FDesc == nil then
-		return
-	end
 
-	for name, val in pairs( scopeTable ) do
-		if type(val) == "function" then
-			local helpstr = "scripthelp_" .. name
-			if vlua.contains( scopeTable, helpstr ) and ( not vlua.contains( _PublishedHelp, helpstr ) ) then
-				FDesc[name] = GetFunctionSignature( val, name ) .. "\n" .. scopeTable[helpstr]
-				_PublishedHelp[helpstr] = true
-			end
-		end
-	end
+-- 这个函数用于将作用域表中的函数添加到脚本帮助信息中。
+function AddToScriptHelp(scopeTable)
+    -- 如果 FDesc 为 nil，则返回，不执行任何操作。
+    if FDesc == nil then
+        return
+    end
+
+    -- 遍历作用域表中的每个键值对。
+    for name, val in pairs(scopeTable) do
+        -- 如果值的类型为函数，则执行以下操作。
+        if type(val) == "function" then
+            -- 构建帮助字符串的键。
+            local helpstr = "scripthelp_" .. name
+            -- 检查作用域表中是否包含帮助字符串的键，并且 _PublishedHelp 中还未包含该键对应的信息。
+            if vlua.contains(scopeTable, helpstr) and (not vlua.contains(_PublishedHelp, helpstr)) then
+                -- 获取函数签名和名称，并将其与帮助信息一起存储到 FDesc 表中。
+                FDesc[name] = GetFunctionSignature(val, name) .. "\n" .. scopeTable[helpstr]
+                -- 将帮助字符串的键添加到 _PublishedHelp 表中，并将其值设置为 true，表示已发布。
+                _PublishedHelp[helpstr] = true
+            end
+        end
+    end
 end
 
--- This chunk of code forces the reloading of all modules when we reload script.
+-- 这段代码在重新加载脚本时强制重新加载所有模块。
+-- 如果 g_reloadState 为 nil，则初始化为一个空表，并将所有已加载的模块存储在其中。
 if g_reloadState == nil then
-	g_reloadState = {}
-	for k,v in pairs( package.loaded ) do
-		g_reloadState[k] = v
-	end
+    g_reloadState = {}
+    -- 遍历 package.loaded 表中的所有键值对。
+    for k, v in pairs(package.loaded) do
+        -- 将当前模块的键值对存储到 g_reloadState 表中。
+        g_reloadState[k] = v
+    end
+-- 否则，遍历所有已加载的模块。
 else
-	for k,v in pairs( package.loaded ) do
-		if g_reloadState[k] == nil then
-			package.loaded[k] = nil
-		end
-	end
+    -- 再次遍历 package.loaded 表中的所有键值对。
+    for k, v in pairs(package.loaded) do
+        -- 如果 g_reloadState 表中没有当前模块的对应键值对，则说明该模块是新加载的。
+        if g_reloadState[k] == nil then
+            -- 将该模块从 package.loaded 中移除，以便在重新加载时强制重新加载。
+            package.loaded[k] = nil
+        end
+    end
 end
 
 -- 此函数允许 Lua 实例扩展 C++ 实例的功能。

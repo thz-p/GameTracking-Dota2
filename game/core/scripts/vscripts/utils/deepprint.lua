@@ -184,3 +184,11 @@ function DeepPrint(debugInstance, prefix)
     prefix = prefix or ""
     print(DeepToString(debugInstance, prefix))
 end
+
+-- 这段代码提供了一些用于调试的辅助函数，主要功能如下：
+
+-- 1. `DeepPrintTable` 函数用于打印表的内容，包括表中的子表，以及避免循环引用。
+-- 2. `DeepToString` 函数用于将表的内容转换为字符串表示形式。
+-- 3. `DeepPrint` 函数用于将表的内容打印到控制台。
+
+-- 这些函数对于开发过程中的调试非常有用，但在最终的产品代码中不应该被调用。

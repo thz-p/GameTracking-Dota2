@@ -30,7 +30,6 @@
 	#jT$
 	%.*s
 	%s at offset %d, 
-	/T'D
 	6p7M
 	6p7MOf
 	8J	u%A
@@ -1484,6 +1483,7 @@ $~RE3
 +	?buddy@QSortFilterProxyModel@@UEBA?AVQModelIndex@@AEBV2@@Z
 + ?timerEvent@QToolButton@@MEAAXPEAVQTimerEvent@@@Z
 +"?updateGeometries@QListView@@MEAAXXZ
++*:T*
 +A$Lc
 +Actors
 +C$Hc
@@ -5215,7 +5215,6 @@ $~RE3
 0x%llx
 0x%p = %s '%s'
 0}0i1
-1	<3lWIJ
 1 component
 1 edge
 1 face
@@ -5644,7 +5643,7 @@ $~RE3
 220801000000Z
 2222<<
 230714000000Z
-240223023845Z0/
+240229214910Z0/
 241009235959Z0a1
 255 255 255
 255 255 255 255
@@ -6677,7 +6676,6 @@ $~RE3
 ??YQString@@QEAAAEAV0@PEBD@Z
 ??_7CCharBufferFormatOutputStream@@6B@
 ?@En[vP
-?A]@w
 ?Acquire@CUtlString@@QEAAXPEAVCBufferString@@_N@Z
 ?AddInt@KeyValues@@QEAAXPEBDH@Z
 ?AddNullTermination@CUtlBuffer@@IEAAXXZ
@@ -14882,7 +14880,6 @@ JFIF extension marker: JPEG-compressed thumbnail image, length %u
 JFIF extension marker: RGB thumbnail image, length %u
 JFIF extension marker: palette thumbnail image, length %u
 JFIF extension marker: type 0x%02x, length %u
-JJ6?j
 JP8Nbt
 JP8Nbt 
 JPEG datastream contains no image
@@ -16382,7 +16379,6 @@ Movement Speed: %0.*fx   [%s] to reset
 Movement lag compensation
 MovementSettings
 MsL;e
-MuZH|
 Mul R%d <- R%d * R%d
 Mulitply object tint
 MultiByteToWideChar
@@ -20044,7 +20040,7 @@ X-Axis Size
 X0HcE
 X24_TYPELESS_G8_UINT
 X32_TYPELESS_G8X24_UINT
-X5ZJt
+X5RJt
 X8t2H
 X=gz	
 X?setBrush@QPainter@@QEAAXAEBVQBrush@@@Z
@@ -20137,23 +20133,24 @@ Y%W]f
 Y%thV
 Y%wuS
 Y(s-H
-Y-,N?
+Y-$N?
+Y-?n@
 Y-Axis
 Y-Axis Size
 Y-C-[
-Y-Gn@
 Y-rx$
 Y0HcA(H
 Y5+Go
 Y5@h8
 Y5IGo
+Y5yrO
 Y8HcA0H
 Y9"SD
 Y=!`(
-Y=;^@
+Y=3^@
 Y=Cf8
 Y=[BG
-Y=f`@
+Y=^`@
 Y>kX>M
 Y?setData@QStandardItem@@UEAAXAEBVQVariant@@H@Z
 Y?setData@QStandardItemModel@@UEAA_NAEBVQModelIndex@@AEBVQVariant@@H@Z
@@ -20321,7 +20318,6 @@ Zpm"U
 [Test] Int Value 50
 [Test] Random Yes/No Outflow
 [aOni*{
-[dwR0V
 [fA9<
 [fE94
 [fE;A
@@ -20581,7 +20577,7 @@ Zpm"U
 \$|u.A
 \) HcD)
 \5!_V
-\5?v5
+\57v5
 \=>6-
 \=\Mq
 \?setWeight@QFont@@QEAAXH@Z
@@ -20611,7 +20607,7 @@ Zpm"U
 ]$Lc}
 ])6M>&
 ],fD;
-]-V	!
+]-N	!
 ]0H;]
 ]0IcE(H
 ]0IcMH;
@@ -20620,11 +20616,11 @@ Zpm"U
 ]0tTH
 ]0u#M
 ]4fD;
-]5@L6
-]5FY@
+]58L6
+]5>Y@
 ]5yX"
 ]8tQH
-]=LI6
+]=DI6
 ]>)2X
 ]?sharedPainter@QPaintDevice@@MEBAPEAVQPainter@@XZ
 ]?staticMetaObject@QTextDocument@@2UQMetaObject@@B
@@ -21602,6 +21598,7 @@ e+000
 e0A_A^A]A\]
 e0A_A^A]A\_^]
 e8A_A^A]A\_^[]
+e<DQaT
 e@A_A^A]A\_^]
 e@A_A^]
 e@Mc|$
@@ -23781,7 +23778,6 @@ must be either LogLUV or LogL
 mwL;m
 mwtMH
 n D;>}EH
-n.$ `
 n03>Pu
 n<	fE
 n<	fG
@@ -24422,7 +24418,6 @@ s89sH|AH
 s8H9s H
 s8xDHc
 s<fff
-s?xmE
 s@H9s(H
 sAmTb
 sHu!H

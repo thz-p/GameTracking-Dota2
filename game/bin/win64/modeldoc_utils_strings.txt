@@ -174,7 +174,6 @@
  A__^][
  Base Class Array'
  Base Class Descriptor at (
- Bcuv
  C>TQ
  Class Hierarchy Descriptor'
  Complete Object Locator'
@@ -525,7 +524,6 @@ $prefix_element$
 &?PPPPPPP?
 &?Right@FbxString@fbxsdk@@QEBA?AV12@_K@Z
 &?Set@FbxMatrix@fbxsdk@@QEAAXHHN@Z
-&B[`k
 &YA1+
 &YA1A
 &YA1D
@@ -1161,6 +1159,7 @@ $prefix_element$
 -1.000000
 -> %s
 -BH>t
+-O!R@
 -YA1H
 -YA1I
 -YA1f
@@ -7326,6 +7325,7 @@ $prefix_element$
 /YA1A
 /YA1H
 /YA1I
+/b|fI?
 /|$@v
 /|7$r
 0 0 0
@@ -7434,7 +7434,7 @@ $prefix_element$
 220323000000Z
 220801000000Z
 230714000000Z
-240223023817Z0/
+240229214631Z0/
 241009235959Z0a1
 2D Aim
 2D Blend Has No Referenced Animations
@@ -7478,6 +7478,7 @@ $prefix_element$
 4HA;x
 4YA1H
 4YA1I
+4d/2^T
 4http://crl3.digicert.com/DigiCertAssuredIDRootCA.crl0
 5D8{Hu/H
 5FjiT
@@ -7669,7 +7670,6 @@ $prefix_element$
 9~P~3
 9~P~7
 9~P~;
-:0k@W
 :: <NO TARGET BONE>
 :;=,2
 :>)*	v
@@ -7742,7 +7742,6 @@ $prefix_element$
 <!-- DMXVersion
 <!-- dmx
 <!uCH
-<$f3|a
 <-u5L
 </li>
 </ul>
@@ -7813,7 +7812,6 @@ $prefix_element$
 =imb;D
 =rIQU
 =stop_on_seq_change_instantly
-=wW-c
 >"?IsValid@FbxProperty@fbxsdk@@QEBA_NXZ
 >%H5<mN
 >0<0:
@@ -11551,7 +11549,6 @@ ERROR: Unable to create an attribute handle! Save, quit, restart and clean up yo
 ET$XD
 ET$`D
 ET$hD
-EU.Io
 EXD9D
 EXHcL$XH
 EXIFIFDOffset
@@ -11802,6 +11799,7 @@ F D9D
 F H9H
 F L9$
 F Lc8A
+F&6x&
 F(;;sEH
 F(;;sFH
 F0D9D
@@ -17173,6 +17171,7 @@ Zpm"U
 ^	_V_ComposeFileName
 ^ ;^$t
 ^(.+)_[0-9A-Fa-f]{8}$
+^) 9_
 ^,tyI
 ^0HcN@A
 ^<V7w
@@ -17557,7 +17556,6 @@ autoplay
 axies
 axisSystem
 b	_V_FileBase
-b*@SI7
 b+GnH
 b8Lcs D;s0
 b?^Cy
@@ -22626,7 +22624,6 @@ v	_V_strncpy
 v %f %f %f
 v xOHc
 v$fff
-v-`Ts
 v0H9{0
 v2!L.2
 v8taA
@@ -22932,7 +22929,6 @@ zY;>u:m
 zero dir
 zero_unselected
 zfriction
-zik{q3e
 znear
 { AUAVAWH
 { AVH
@@ -23323,7 +23319,6 @@ znear
 ~ $s%r
 ~ D;c
 ~"fff
-~$UFjl
 ~'fff
 ~(D;c
 ~,*u<I

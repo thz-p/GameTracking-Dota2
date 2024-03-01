@@ -16,6 +16,7 @@
 !DOTA Vote System
 !ITestScriptMgr
 !IsFlagSet( type, DATA_UPDATE_TYPE_CREATED )
+!IsGameModeAbilityDraft() || IsReplicated() || pCaster == nullptr || pCaster->IsMarkedForDeletion() || GetAbilityIndex() == -1 || pCaster->GetAbilityByIndex( m_iAbilityIndex ) != this
 !The Dota game manager
 !The global list of heroes
 !The projectile manager
@@ -1521,6 +1522,7 @@ $tK
 ../../../_build_/game/server/_vpc_server_dota/unity/linuxsteamrt64/_proto_/../_schema_/release/../../../../../../../../src/game/server/baseentity.cpp
 ../../../_build_/game/server/_vpc_server_dota/unity/linuxsteamrt64/_proto_/../_schema_/release/../../../../../../../../src/game/server/client.cpp
 ../../../_build_/game/server/_vpc_server_dota/unity/linuxsteamrt64/_proto_/../_schema_/release/../../../../../../../../src/game/server/dota/bot/dota_bot.cpp
+../../../_build_/game/server/_vpc_server_dota/unity/linuxsteamrt64/_proto_/../_schema_/release/../../../../../../../../src/game/server/dota/dota_base_ability.cpp
 ../../../_build_/game/server/_vpc_server_dota/unity/linuxsteamrt64/_proto_/../_schema_/release/../../../../../../../../src/game/server/dota/npc/dota_npc_base.cpp
 ../../../_build_/game/server/_vpc_server_dota/unity/linuxsteamrt64/_proto_/../_schema_/release/../../../../../../../../src/game/shared/dota/dota_gamerules.cpp
 ../../../_build_/game/server/_vpc_server_dota/unity/linuxsteamrt64/_proto_/../_schema_/release/../../../../../../../../src/game/shared/dota/dota_ingameevents_muertarelease.cpp
@@ -16634,6 +16636,10 @@ AbilityChannelTime
 AbilityChannelledHealthCostPerSecond
 AbilityChannelledManaCostPerSecond
 AbilityCooldown
+AbilityDraftAbilityRemoval. CDOTA_BaseNPC::RemoveAbilityFromIndex called, removing ability=%s
+AbilityDraftAbilityRemoval. CDOTA_BaseNPC::RemoveAbilityFromIndexByName called, removing ability=%s because it matched name=%s
+AbilityDraftAbilityRemoval. CDOTA_BaseNPC::Script_RemoveAbility called, removing ability=%s because it matched name=%s
+AbilityDraftAbilityRemoval. CDOTA_BaseNPC::Script_RemoveAbilityByHandle called, removing ability=%s
 AbilityDraftIgnoreCount
 AbilityDraftPreAbility
 AbilityDraftUltScepterPreAbility
@@ -16898,6 +16904,7 @@ Added guild %u challenge %u for %d accounts
 Added new event! index %ld - time %f - priority %d
 Added subscription message of version %llu for %s from system %d
 Added up to date partial of version %llu for %s from system %d
+Adding CMsgSteamLearnPlayerTimedStats_StatBucket[%d] for PlayerID: %d -%s
 Adding Idle Event: Priority %d - Target: %s - max dist: %f
 Adding New Music Element!
 Adding listener %s
@@ -40115,7 +40122,7 @@ SendOverheadEventMessage
 SendProxyNeverSend_RecipientsFilter
 SendProxyNoPlayerEntities_RecipientsFilter
 SendQueryUGCRequest failed
-SendSteamLearnMatchInfo:: submitting PlayerTimedStats for PlayerID: %d -%s
+SendSteamLearnMatchInfo:: submitting PlayerTimedStats for PlayerID: %d (%d buckets)
 SendToConsole
 SendToServerConsole
 Send_ServerToAllClients

@@ -273,3 +273,6 @@ function vlua.select( conditional, valueIfTrue, valueIfFalse )
 	end
 	return valueIfFalse
 end
+
+-- 这段代码是用Lua语言编写的，主要目的是模拟Squirrel编程语言中一些常见的操作。
+-- 这些函数使得在Lua中能够更方便地进行表和字符串的操作。

@@ -381,3 +381,5 @@ end
 function CPortalSpawner:GetNumSpawnsRemaining()
 	return self.nNumSpawnsRemaining
 end
+
+-- 这个类的目的是在游戏中动态生成传送门和单位，它的实例将被用于控制游戏中的特定事件和战斗过程。

@@ -3484,93 +3484,105 @@ end
 
 --------------------------------------------------------------------------------
 
-function CMapEncounter:SetupBristlebackShop( bRepopulateNeutralItems )
-	if bRepopulateNeutralItems then
-		local vecPricedItems1 = GetPricedNeutralItems( self.hRoom:GetDepth() - 1, false )
-		local vecPricedItems2 = GetPricedNeutralItems( self.hRoom:GetDepth() - 2, false )
+-- 设置Bristleback商店
+function CMapEncounter:SetupBristlebackShop(bRepopulateNeutralItems)
+    -- 如果需要重新填充中立物品
+    if bRepopulateNeutralItems then
+        -- 获取深度为房间深度减1的定价中立物品和深度为房间深度减2的定价中立物品
+        local vecPricedItems1 = GetPricedNeutralItems(self.hRoom:GetDepth() - 1, false)
+        local vecPricedItems2 = GetPricedNeutralItems(self.hRoom:GetDepth() - 2, false)
 
-		for _,szLessItem in pairs ( vecPricedItems1 ) do
-			local bFound = false
-			for _,szThisDepthItem in pairs ( vecPricedItems2 ) do
-				if szThisDepthItem == szLessItem then
-					bFound = true
-					break
-				end
-			end
+        -- 将深度为房间深度减1的定价中立物品添加到深度为房间深度减2的定价中立物品中
+        for _, szLessItem in pairs(vecPricedItems1) do
+            local bFound = false
+            for _, szThisDepthItem in pairs(vecPricedItems2) do
+                if szThisDepthItem == szLessItem then
+                    bFound = true
+                    break
+                end
+            end
 
-			if not bFound then
-				table.insert( vecPricedItems2, szLessItem )
-			end
-		end 
+            if not bFound then
+                table.insert(vecPricedItems2, szLessItem)
+            end
+        end
 
-		local vecFilteredItems = GameRules.Aghanim:FilterPreviouslyDroppedItems( vecPricedItems1 )
-		
-		for nItem = #GameRules.Aghanim.BristlebackItems,1,-1 do
-			local szPreviousItemName = GameRules.Aghanim.BristlebackItems[ nItem ]
-			GameRules:GetGameModeEntity():RemoveItemFromCustomShop( szPreviousItemName, "boss_shop" )
-		end
+        -- 过滤已经掉落的物品
+        local vecFilteredItems = GameRules.Aghanim:FilterPreviouslyDroppedItems(vecPricedItems1)
 
-		for i=1,8 do 
-			local index = self:RoomRandomInt( 1, #vecFilteredItems )
-			local szItemName = vecFilteredItems[ index ]
-			GameRules:GetGameModeEntity():AddItemToCustomShop( szItemName, "boss_shop", "2" )
-			table.remove( vecFilteredItems, index )
+        -- 移除之前的Bristleback物品
+        for nItem = #GameRules.Aghanim.BristlebackItems, 1, -1 do
+            local szPreviousItemName = GameRules.Aghanim.BristlebackItems[nItem]
+            GameRules:GetGameModeEntity():RemoveItemFromCustomShop(szPreviousItemName, "boss_shop")
+        end
 
-			table.insert( GameRules.Aghanim.BristlebackItems, szItemName )
-			GameRules.Aghanim:MarkNeutralItemAsDropped( szItemName )
-		end
+        -- 向Bristleback商店添加新的物品
+        for i = 1, 8 do
+            local index = self:RoomRandomInt(1, #vecFilteredItems)
+            local szItemName = vecFilteredItems[index]
+            GameRules:GetGameModeEntity():AddItemToCustomShop(szItemName, "boss_shop", "2")
+            table.remove(vecFilteredItems, index)
 
-		for nPlayerID = 0, AGHANIM_PLAYERS - 1 do 
-			local hPlayerHero = PlayerResource:GetSelectedHeroEntity( nPlayerID )
-			if hPlayerHero then
-				local PurchasableShards = PURCHASABLE_SHARDS[ hPlayerHero:GetUnitName() ]
-				if PurchasableShards then
-					local PossibleShards = shallowcopy( PurchasableShards )
-					local nRemainingShards = 3
-					while nRemainingShards > 0 do
-						local nShardIndex = self:RoomRandomInt( 1, #PossibleShards )
-						local szShardName = PossibleShards[ nShardIndex ]
-						if szShardName then
-							GameRules:GetGameModeEntity():AddItemToCustomShop( szShardName, "boss_shop", hPlayerHero:GetUnitName() )
-							GameRules:IncreaseItemStock( DOTA_TEAM_GOODGUYS, szShardName, 1, -1 )
-							table.remove( PossibleShards, nShardIndex )
-							table.insert( GameRules.Aghanim.BristlebackItems, szShardName )
-						end
+            table.insert(GameRules.Aghanim.BristlebackItems, szItemName)
+            GameRules.Aghanim:MarkNeutralItemAsDropped(szItemName)
+        end
 
-						nRemainingShards = nRemainingShards - 1
-					end
-				end 
-			end
-		end
-	end
+        -- 为每个玩家添加可购买的碎片
+        for nPlayerID = 0, AGHANIM_PLAYERS - 1 do
+            local hPlayerHero = PlayerResource:GetSelectedHeroEntity(nPlayerID)
+            if hPlayerHero then
+                local PurchasableShards = PURCHASABLE_SHARDS[hPlayerHero:GetUnitName()]
+                if PurchasableShards then
+                    local PossibleShards = shallowcopy(PurchasableShards)
+                    local nRemainingShards = 3
+                    while nRemainingShards > 0 do
+                        local nShardIndex = self:RoomRandomInt(1, #PossibleShards)
+                        local szShardName = PossibleShards[nShardIndex]
+                        if szShardName then
+                            GameRules:GetGameModeEntity():AddItemToCustomShop(szShardName, "boss_shop", hPlayerHero:GetUnitName())
+                            GameRules:IncreaseItemStock(DOTA_TEAM_GOODGUYS, szShardName, 1, -1)
+                            table.remove(PossibleShards, nShardIndex)
+                            table.insert(GameRules.Aghanim.BristlebackItems, szShardName)
+                        end
 
-	GameRules:IncreaseItemStock( DOTA_TEAM_GOODGUYS, "item_life_rune", AGHANIM_PLAYERS, -1 )
-	GameRules:IncreaseItemStock( DOTA_TEAM_GOODGUYS, "item_book_of_strength", AGHANIM_PLAYERS, -1 )
-	GameRules:IncreaseItemStock( DOTA_TEAM_GOODGUYS, "item_book_of_agility", AGHANIM_PLAYERS, -1 )
-	GameRules:IncreaseItemStock( DOTA_TEAM_GOODGUYS, "item_book_of_intelligence", AGHANIM_PLAYERS, -1 )
+                        nRemainingShards = nRemainingShards - 1
+                    end
+                end
+            end
+        end
+    end
 
-	local hBristleEnts = self:GetRoom():FindAllEntitiesInRoomByName( "boss_shop" )
-	for _,hEnt in pairs ( hBristleEnts ) do
-		if hEnt:GetClassname() == "ent_dota_shop" then
-			local szWearables =
-			{
-				"models/heroes/bristleback/bristleback_back.vmdl",
-				"models/heroes/bristleback/bristleback_bracer.vmdl",
-				"models/heroes/bristleback/bristleback_head.vmdl", 
-				"models/heroes/bristleback/bristleback_necklace.vmdl", 
-			}
-			
-			for _,szWearable in pairs ( szWearables ) do
-				local hWearable = Entities:CreateByClassname( "wearable_item" )
-				if hWearable ~= nil then
-					hWearable:SetModel( szWearable )
-					hWearable:SetTeam( DOTA_TEAM_GOODGUYS )
-					hWearable:SetOwner( hEnt )
-					hWearable:FollowEntity( hEnt, true )
-				end
-			end 			
-		end
-	end
+    -- 增加生命符文、力量之书、敏捷之书和智力之书的库存
+    GameRules:IncreaseItemStock(DOTA_TEAM_GOODGUYS, "item_life_rune", AGHANIM_PLAYERS, -1)
+    GameRules:IncreaseItemStock(DOTA_TEAM_GOODGUYS, "item_book_of_strength", AGHANIM_PLAYERS, -1)
+    GameRules:IncreaseItemStock(DOTA_TEAM_GOODGUYS, "item_book_of_agility", AGHANIM_PLAYERS, -1)
+    GameRules:IncreaseItemStock(DOTA_TEAM_GOODGUYS, "item_book_of_intelligence", AGHANIM_PLAYERS, -1)
+
+    -- 在房间内查找所有的Bristleback商店
+    local hBristleEnts = self:GetRoom():FindAllEntitiesInRoomByName("boss_shop")
+    for _, hEnt in pairs(hBristleEnts) do
+        -- 如果实体是一个商店
+        if hEnt:GetClassname() == "ent_dota_shop" then
+            local szWearables =
+            {
+                "models/heroes/bristleback/bristleback_back.vmdl",
+                "models/heroes/bristleback/bristleback_bracer.vmdl",
+                "models/heroes/bristleback/bristleback_head.vmdl",
+                "models/heroes/bristleback/bristleback_necklace.vmdl",
+            }
+
+            -- 为商店添加可穿戴物品
+            for _, szWearable in pairs(szWearables) do
+                local hWearable = Entities:CreateByClassname("wearable_item")
+                if hWearable ~= nil then
+                    hWearable:SetModel(szWearable)
+                    hWearable:SetTeam(DOTA_TEAM_GOODGUYS)
+                    hWearable:SetOwner(hEnt)
+                    hWearable:FollowEntity(hEnt, true)
+                end
+            end
+        end
+    end
 end
 
 return CMapEncounter

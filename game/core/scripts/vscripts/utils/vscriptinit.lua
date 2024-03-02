@@ -723,3 +723,5 @@ function BaseEntityClass:IsInstance( classOrClassName )
     end
     return false
 end
+
+-- 这些函数为Lua脚本提供了丰富的调试功能，包括在屏幕上绘制信息、跟踪变量的值和函数调用等

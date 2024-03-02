@@ -8,13 +8,20 @@ end
 
 --------------------------------------------------------------------------------
 
+-- 当技能施法开始时触发的函数
 function catapult_disembark:OnAbilityPhaseStart()
+	-- 仅在服务器端执行以下操作
 	if IsServer() then
+		-- 创建预览特效并附着到施法者身上
 		self.nPreviewFX = ParticleManager:CreateParticle( "particles/dark_moon/darkmoon_creep_warning.vpcf", PATTACH_ABSORIGIN_FOLLOW, self:GetCaster() )
+		-- 设置特效控制点，使其跟随施法者位置
 		ParticleManager:SetParticleControlEnt( self.nPreviewFX, 0, self:GetCaster(), PATTACH_ABSORIGIN_FOLLOW, nil, self:GetCaster():GetOrigin(), true )
+		-- 设置特效控制点，定义特效大小
 		ParticleManager:SetParticleControl( self.nPreviewFX, 1, Vector( 150, 150, 150 ) )
+		-- 设置特效控制点，定义特效颜色
 		ParticleManager:SetParticleControl( self.nPreviewFX, 15, Vector( 252, 118, 46 ) )
 	end
+	-- 返回 true 表示技能施法继续
 	return true
 end
 

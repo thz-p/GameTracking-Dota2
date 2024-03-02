@@ -4,39 +4,55 @@ end
 
 ----------------------------------------------------------------------------
 
-function CDotaSpawner:constructor( szSpawnerNameInput, szLocatorNameInput, rgUnitsInfoInput )
-	self.szSpawnerName = szSpawnerNameInput
-	self.szLocatorName = szLocatorNameInput
-	self.rgUnitsInfo = rgUnitsInfoInput
-	self.rgSpawners = {}
-	self.Encounter = nil
+-- CDotaSpawner:constructor(szSpawnerNameInput, szLocatorNameInput, rgUnitsInfoInput) 函数用于初始化 CDotaSpawner 类的实例
+function CDotaSpawner:constructor(szSpawnerNameInput, szLocatorNameInput, rgUnitsInfoInput)
+    -- 将传入的参数赋值给对应的成员变量
+    self.szSpawnerName = szSpawnerNameInput
+    self.szLocatorName = szLocatorNameInput
+    self.rgUnitsInfo = rgUnitsInfoInput
+    self.rgSpawners = {}  -- 刷怪点数组
+    self.Encounter = nil  -- 遇到信息
+
+    -- 返回初始化后的实例
+    return self
 end
 
 ----------------------------------------------------------------------------
 
+-- CDotaSpawner:GetSpawnerType() 函数用于获取刷怪点的类型
 function CDotaSpawner:GetSpawnerType()
-	return "CDotaSpawner"
+    -- 返回刷怪点的类型字符串
+    return "CDotaSpawner"
 end
 
 ----------------------------------------------------------------------------
 
-function CDotaSpawner:Precache( context )
-	--print( "CDotaSpawner:Precache called for " .. self.szSpawnerName )
-
-	for _,rgUnitInfo in pairs ( self.rgUnitsInfo ) do
-		PrecacheUnitByNameSync( rgUnitInfo.EntityName, context, -1 )
-	end
+-- CDotaSpawner:Precache(context) 函数用于预加载资源
+function CDotaSpawner:Precache(context)
+    -- 遍历所有单位信息
+    for _, rgUnitInfo in pairs(self.rgUnitsInfo) do
+        -- 使用 PrecacheUnitByNameSync 函数预加载单位资源
+        PrecacheUnitByNameSync(rgUnitInfo.EntityName, context, -1)
+    end
 end
 
 ----------------------------------------------------------------------------
 
-function CDotaSpawner:OnEncounterLoaded( EncounterInput )
-	print( "CDotaSpawner:OnEncounterLoaded called for " .. self.szSpawnerName )
-	self.Encounter = EncounterInput
-	self.rgSpawners = self.Encounter:GetRoom():FindAllEntitiesInRoomByName( self.szLocatorName, false )
-	if #self.rgSpawners == 0 then
-		print( "Failed to find entity " .. self.szSpawnerName .. " as spawner position in map " .. self.Encounter:GetRoom():GetMapName() )
-	end
+-- CDotaSpawner:OnEncounterLoaded(EncounterInput) 函数用于在遇到加载完成时进行处理
+function CDotaSpawner:OnEncounterLoaded(EncounterInput)
+    -- 打印调试信息，表示遇到加载完成事件被调用
+    print("CDotaSpawner:OnEncounterLoaded called for " .. self.szSpawnerName)
+    
+    -- 将遇到信息保存到成员变量 Encounter 中
+    self.Encounter = EncounterInput
+    
+    -- 在当前房间中查找所有名称为 self.szLocatorName 的实体，即刷怪点
+    self.rgSpawners = self.Encounter:GetRoom():FindAllEntitiesInRoomByName(self.szLocatorName, false)
+    
+    -- 如果未找到刷怪点，则输出错误信息
+    if #self.rgSpawners == 0 then
+        print("Failed to find entity " .. self.szSpawnerName .. " as spawner position in map " .. self.Encounter:GetRoom():GetMapName())
+    end
 end
 
 ----------------------------------------------------------------------------

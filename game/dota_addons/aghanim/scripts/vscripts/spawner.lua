@@ -41,54 +41,71 @@ end
 
 ----------------------------------------------------------------------------
 
+-- CDotaSpawner:GetSpawnPositionCount() 函数用于获取刷怪点的数量
 function CDotaSpawner:GetSpawnPositionCount()
-	return #self.rgSpawners
+    -- 返回刷怪点数组的长度，即刷怪点的数量
+    return #self.rgSpawners
 end
 
 ----------------------------------------------------------------------------
 
+-- CDotaSpawner:GetSpawnCountPerSpawnPosition() 函数用于获取每个刷怪点位置生成的单位数量
 function CDotaSpawner:GetSpawnCountPerSpawnPosition()
-
-	local nCount = 0
-	for _,rgUnitInfo in pairs ( self.rgUnitsInfo ) do
-		nCount = nCount + rgUnitInfo.Count
-	end
-	return nCount
-
+    -- 初始化单位数量为0
+    local nCount = 0
+    
+    -- 遍历所有单位信息，累加单位数量
+    for _, rgUnitInfo in pairs(self.rgUnitsInfo) do
+        nCount = nCount + rgUnitInfo.Count
+    end
+    
+    return nCount
 end
 
 ----------------------------------------------------------------------------
 
+-- CDotaSpawner:SpawnUnits() 函数用于从刷怪点生成单位
 function CDotaSpawner:SpawnUnits()
-	
-	if #self.rgSpawners == 0 then
-		print( "ERROR - Spawner " .. self.szSpawnerName .. " found no spawn entities, cannot spawn" )
-		return
-	end
+    -- 如果刷怪点数组为空，则输出错误信息并返回
+    if #self.rgSpawners == 0 then
+        print("ERROR - Spawner " .. self.szSpawnerName .. " found no spawn entities, cannot spawn")
+        return
+    end
 
-	local nSpawned = 0
+    -- 用于统计生成的单位数量
+    local nSpawned = 0
 
-	local hSpawnedUnits = {}
+    -- 用于存储所有生成的单位
+    local hSpawnedUnits = {}
 
-	for nSpawnerIndex,hSpawner in pairs( self.rgSpawners ) do
-		local vLocation = hSpawner:GetAbsOrigin()
-		for _,rgUnitInfo in pairs ( self.rgUnitsInfo ) do
-			local hSingleSpawnedUnits = self:SpawnSingleUnitType( rgUnitInfo, vLocation )
-			nSpawned = nSpawned + rgUnitInfo.Count
+    -- 遍历所有刷怪点
+    for nSpawnerIndex, hSpawner in pairs(self.rgSpawners) do
+        -- 获取刷怪点的位置
+        local vLocation = hSpawner:GetAbsOrigin()
+        
+        -- 对于每种单位信息，从刷怪点生成相应数量的单位
+        for _, rgUnitInfo in pairs(self.rgUnitsInfo) do
+            -- 从刷怪点生成单个类型的单位
+            local hSingleSpawnedUnits = self:SpawnSingleUnitType(rgUnitInfo, vLocation)
+            -- 更新生成的单位数量
+            nSpawned = nSpawned + rgUnitInfo.Count
 
-			for _,hUnit in pairs ( hSingleSpawnedUnits ) do
-				table.insert( hSpawnedUnits, hUnit )
-			end
-		end
-	end
+            -- 将生成的单位添加到 hSpawnedUnits 数组中
+            for _, hUnit in pairs(hSingleSpawnedUnits) do
+                table.insert(hSpawnedUnits, hUnit)
+            end
+        end
+    end
 
-	printf( "%s spawning %d units", self.szSpawnerName, nSpawned )
+    -- 打印生成的单位数量信息
+    printf("%s spawning %d units", self.szSpawnerName, nSpawned)
 
-	if #hSpawnedUnits > 0 then
-		self.Encounter:OnSpawnerFinished( self, hSpawnedUnits )
-	end
+    -- 如果有生成单位，则调用 Encounter:OnSpawnerFinished 方法
+    if #hSpawnedUnits > 0 then
+        self.Encounter:OnSpawnerFinished(self, hSpawnedUnits)
+    end
 
-	return hSpawnedUnits
+    return hSpawnedUnits
 end
 
 ----------------------------------------------------------------------------

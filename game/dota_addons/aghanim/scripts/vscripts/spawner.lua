@@ -93,35 +93,48 @@ end
 
 ----------------------------------------------------------------------------
 
-function CDotaSpawner:SpawnSingleUnitType( rgUnitInfo, vLocation )
-	local hSpawnedUnits = {}
-	for i=1,rgUnitInfo.Count do
-		local vSpawnPos = vLocation
-		if rgUnitInfo.PositionNoise ~= nil then
-			vSpawnPos = vSpawnPos + RandomVector( RandomFloat( 0.0, rgUnitInfo.PositionNoise ) )
-		end
+-- CDotaSpawner:SpawnSingleUnitType(rgUnitInfo, vLocation) 函数用于生成单个类型的单位
+function CDotaSpawner:SpawnSingleUnitType(rgUnitInfo, vLocation)
+    -- 用于存储生成的单位
+    local hSpawnedUnits = {}
+    
+    -- 循环生成指定数量的单位
+    for i = 1, rgUnitInfo.Count do
+        -- 根据位置信息生成单位的位置
+        local vSpawnPos = vLocation
+        if rgUnitInfo.PositionNoise ~= nil then
+            vSpawnPos = vSpawnPos + RandomVector(RandomFloat(0.0, rgUnitInfo.PositionNoise))
+        end
 
-		local hUnit = CreateUnitByName( rgUnitInfo.EntityName, vSpawnPos, true, nil, nil, rgUnitInfo.Team )
+        -- 在指定位置创建单位
+        local hUnit = CreateUnitByName(rgUnitInfo.EntityName, vSpawnPos, true, nil, nil, rgUnitInfo.Team)
 
-		if hUnit == nil then
-			print( "ERROR! Failed to spawn unit named " .. rgUnitInfo.EntityName )
+        -- 如果单位创建失败，则输出错误信息
+        if hUnit == nil then
+            print("ERROR! Failed to spawn unit named " .. rgUnitInfo.EntityName)
+        else
+            -- 使单位面向生成位置
+            hUnit:FaceTowards(vLocation)
+            
+            -- 如果有后置生成函数，则调用该函数
+            if rgUnitInfo.PostSpawn ~= nil then
+                rgUnitInfo.PostSpawn(hUnit)
+            end
+            
+            -- 将生成的单位添加到 hSpawnedUnits 数组中
+            table.insert(hSpawnedUnits, hUnit)
+        end
+    end
 
-		else
-			hUnit:FaceTowards( vLocation )
-			if rgUnitInfo.PostSpawn ~= nil then
-				rgUnitInfo.PostSpawn( hUnit )
-			end
-			table.insert( hSpawnedUnits, hUnit )
-		end
-	end
-
-	return hSpawnedUnits
+    return hSpawnedUnits
 end
 
 ----------------------------------------------------------------------------
 
+-- CDotaSpawner:GetSpawners() 函数用于获取一组刷怪点
 function CDotaSpawner:GetSpawners()
-	return self.rgSpawners
+    -- 返回刷怪点数组
+    return self.rgSpawners
 end
 
 ----------------------------------------------------------------------------

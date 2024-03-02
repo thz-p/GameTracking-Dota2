@@ -126,48 +126,70 @@ end
 
 ----------------------------------------------------------------------------
 
-function CDotaSpawner:SpawnUnitsFromRandomSpawners( nSpawners )
-	print( "spawning from " .. nSpawners .. " " .. self.szSpawnerName .. " spawners out of " .. #self.rgSpawners )
-	local hAllSpawnedUnits = {}
-	local Spawners = nil
-	for n=1,nSpawners do
-		if Spawners == nil or #Spawners == 0 then
-			Spawners = deepcopy( self.rgSpawners )
-		end
+-- CDotaSpawner:SpawnUnitsFromRandomSpawners(nSpawners) 函数用于从随机的刷怪点中生成单位
+function CDotaSpawner:SpawnUnitsFromRandomSpawners(nSpawners)
+    -- 打印正在从多少个刷怪点生成单位
+    print("spawning from " .. nSpawners .. " " .. self.szSpawnerName .. " spawners out of " .. #self.rgSpawners)
+    
+    -- 用于存储所有生成的单位
+    local hAllSpawnedUnits = {}
+    
+    -- 如果刷怪点数组为空，则设置为nil
+    local Spawners = nil
+    
+    -- 从随机的刷怪点中生成单位
+    for n = 1, nSpawners do
+        -- 如果刷怪点数组为空，或者数组中没有刷怪点了，则复制一份初始刷怪点数组
+        if Spawners == nil or #Spawners == 0 then
+            Spawners = deepcopy(self.rgSpawners)
+        end
+        
+        -- 随机选择一个刷怪点
+        local nIndex = math.random(1, #Spawners)
+        local Spawner = Spawners[nIndex]
+        
+        -- 如果选择的刷怪点为空，输出错误信息
+        if Spawner == nil then
+            print("ERROR!  SpawnUnitsFromRandomSpawners went WRONG!!!!!!!!!!!!!")
+        else
+            -- 获取刷怪点的位置
+            local vLocation = Spawner:GetAbsOrigin()
+            
+            -- 对于每种单位信息，从刷怪点生成相应单位
+            for _, rgUnitInfo in pairs(self.rgUnitsInfo) do
+                local hSpawnedUnits = self:SpawnSingleUnitType(rgUnitInfo, vLocation)
+                
+                -- 将生成的单位添加到 hAllSpawnedUnits 数组中
+                for _, hUnit in pairs(hSpawnedUnits) do
+                    table.insert(hAllSpawnedUnits, hUnit)
+                end
+            end
+        end 
+        
+        -- 从刷怪点数组中移除已经使用过的刷怪点
+        table.remove(Spawners, nIndex)
+    end
 
-		--print ( #Spawners .. " potential spawners to use." )
+    -- 如果有生成单位，则调用 Encounter:OnSpawnerFinished 方法
+    if #hAllSpawnedUnits > 0 then
+        self.Encounter:OnSpawnerFinished(self, hAllSpawnedUnits)
+    end
 
-		local nIndex = math.random( 1, #Spawners )
-		local Spawner = Spawners[ nIndex ]
-		if Spawner == nil then
-			print ( "ERROR!  SpawnUnitsFromRandomSpawners went WRONG!!!!!!!!!!!!!" )
-		else
-			local vLocation = Spawner:GetAbsOrigin()
-			for _,rgUnitInfo in pairs ( self.rgUnitsInfo ) do
-				local hSpawnedUnits = self:SpawnSingleUnitType( rgUnitInfo, vLocation )
-				for _,hUnit in pairs ( hSpawnedUnits ) do
-					table.insert( hAllSpawnedUnits, hUnit )
-				end
-			end
-		end 
-		table.remove( Spawners, nIndex )
-	end
-
-	if #hAllSpawnedUnits > 0 then
-		self.Encounter:OnSpawnerFinished( self, hAllSpawnedUnits )
-	end
-
-	return hAllSpawnedUnits
+    return hAllSpawnedUnits
 end
 
 ----------------------------------------------------------------------------
 
+-- CDotaSpawner:GetSpawnerName() 函数用于获取刷怪点的名称
 function CDotaSpawner:GetSpawnerName()
-	return self.szSpawnerName
+    -- 返回刷怪点的名称
+    return self.szSpawnerName
 end
 
 ----------------------------------------------------------------------------
 
+-- CDotaSpawner:GetLocatorName() 函数用于获取地图定位器的名称
 function CDotaSpawner:GetLocatorName()
-	return self.szLocatorName
+    -- 返回地图定位器的名称
+    return self.szLocatorName
 end

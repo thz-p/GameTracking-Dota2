@@ -3316,36 +3316,46 @@ end
 
 --------------------------------------------------------------------------------
 
+-- 获取剩余传送门数量
 function CMapEncounter:GetRemainingPortalCount()
+    -- 初始化剩余传送门数量为0
+    local nPortals = 0
 
-	local nPortals = 0
+    -- 检查传送门生成器列表是否存在
+    if self.PortalSpawners ~= nil then
+        -- 遍历传送门生成器列表
+        for _, hPortalSpawner in pairs(self.PortalSpawners) do
+            -- 如果传送门生成器存在且未被摧毁，则将剩余传送门数量加1
+            if hPortalSpawner and hPortalSpawner:IsDestroyed() == false then
+                nPortals = nPortals + 1
+            end
+        end
+    end
 
-	if self.PortalSpawners ~= nil then
-		for _,hPortalSpawner in pairs ( self.PortalSpawners ) do
-			if hPortalSpawner and hPortalSpawner:IsDestroyed() == false then
-				nPortals = nPortals + 1
-			end
-		end
-	end
+    -- 检查第二个传送门生成器列表是否存在
+    if self.PortalSpawnersV2 ~= nil then
+        -- 遍历第二个传送门生成器列表
+        for _, hPortalSpawner in pairs(self.PortalSpawnersV2) do
+            -- 如果传送门生成器存在，则将剩余传送门数量加上该生成器的传送门单位数量
+            if hPortalSpawner ~= nil then
+                nPortals = nPortals + hPortalSpawner:GetPortalUnitCount()
+            end
+        end
+    end
 
-	if self.PortalSpawnersV2 ~= nil then
-		for _,hPortalSpawner in pairs ( self.PortalSpawnersV2 ) do
-			if hPortalSpawner ~= nil then
-				nPortals = nPortals + hPortalSpawner:GetPortalUnitCount()
-			end
-		end
-	end
+    -- 检查主波次计划是否存在
+    if self.masterWaveSchedule ~= nil then
+        -- 遍历主波次计划
+        for WaveKey, Wave in pairs(self.masterWaveSchedule) do
+            -- 如果波次的生成状态为空或为 'portal_summoning'，则将剩余传送门数量加上该波次的传送门数量
+            if Wave.SpawnStatus == nil or Wave.SpawnStatus == 'portal_summoning' then
+                nPortals = nPortals + Wave.Count
+            end
+        end
+    end
 
-	if self.masterWaveSchedule ~= nil then
-		for WaveKey,Wave in pairs ( self.masterWaveSchedule ) do
-			if Wave.SpawnStatus == nil or Wave.SpawnStatus == 'portal_summoning' then
-				--print( '^^^Master Wave Schedule still has remaining portals from - ' .. WaveKey )
-				nPortals = nPortals + Wave.Count
-			end
-		end
-	end
-
-	return nPortals
+    -- 返回剩余传送门数量
+    return nPortals
 end
 
 --------------------------------------------------------------------------------
@@ -3391,13 +3401,21 @@ end
 
 --------------------------------------------------------------------------------
 
+-- 获取每个玩家的总经验奖励
 function CMapEncounter:GetTotalXPRewardPerPlayer()
-	local nTotalXPRewardPerPlayer = ENCOUNTER_DEPTH_XP_REWARD[self:GetDepth()]
-	if nTotalXPRewardPerPlayer == nil then
-		print( "nil value for ENCOUNTER_DEPTH_XP_REWARD encountered for encounter " .. self.szEncounterName .. " at depth " .. self:GetDepth() ) 
-		return 0 
-	end
-	return nTotalXPRewardPerPlayer
+    -- 获取当前深度的总经验奖励
+    local nTotalXPRewardPerPlayer = ENCOUNTER_DEPTH_XP_REWARD[self:GetDepth()]
+
+    -- 如果总经验奖励为空值
+    if nTotalXPRewardPerPlayer == nil then
+        -- 输出错误信息，指明遭遇名称和深度
+        print("nil value for ENCOUNTER_DEPTH_XP_REWARD encountered for encounter " .. self.szEncounterName .. " at depth " .. self:GetDepth()) 
+        -- 返回0经验奖励
+        return 0 
+    end
+
+    -- 返回每个玩家的总经验奖励
+    return nTotalXPRewardPerPlayer
 end
 
 --------------------------------------------------------------------------------
@@ -3449,19 +3467,22 @@ end
 
 ---------------------------------------------------------
 
-function CMapEncounter:GetSpawnedUnitsOfType( szUnitName )
+-- 获取特定类型的已生成单位列表
+function CMapEncounter:GetSpawnedUnitsOfType(szUnitName)
+    -- 创建一个空列表来存储特定类型的单位
+    local hUnits = {}
 
-	local hUnits = {}
+    -- 遍历已生成的单位列表
+    for i = 1, #self.SpawnedEnemies do
+        -- 检查当前单位是否存在且单位类型与给定的单位名称匹配
+        if self.SpawnedEnemies[i] ~= nil and self.SpawnedEnemies[i]:GetUnitName() == szUnitName then
+            -- 如果匹配，将该单位添加到列表中
+            table.insert(hUnits, self.SpawnedEnemies[i])
+        end
+    end
 
-	for i=1,#self.SpawnedEnemies do
-
-		if self.SpawnedEnemies[i] ~= nil and self.SpawnedEnemies[i]:GetUnitName() == szUnitName then
-			table.insert( hUnits, self.SpawnedEnemies[i] )
-		end
-
-	end
-
-	return hUnits
+    -- 返回包含特定类型单位的列表
+    return hUnits
 end
 
 --------------------------------------------------------------------------------

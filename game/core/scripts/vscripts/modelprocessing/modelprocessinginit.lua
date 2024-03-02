@@ -28,3 +28,5 @@ end
 require "utils.library"
 
 --print( ">>> modelprocessing script system ...done" )
+
+-- 这段脚本是在模型处理 vscript 系统启动时运行的。

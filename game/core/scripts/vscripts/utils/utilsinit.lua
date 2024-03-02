@@ -117,3 +117,5 @@ ParticleEffectControlPoints = class(
 
 
 require "utils.deepprint"
+
+-- 这些函数和系统提供了一些基本的数学运算和数据处理功能，以及一个用于管理粒子效果的简单系统。
